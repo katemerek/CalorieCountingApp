@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PersonDto {
+
+    @NotBlank(message = "Please enter your username")
     private String username;
+
+    @Column(name = "gender")
+    @NotBlank(message = "Please enter your gender: Gender.MALE or Gender.FEMALE")
+    private String gender;
 
     @Email(message = "Please provide a valid email address")
     private String email;

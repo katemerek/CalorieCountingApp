@@ -1,17 +1,21 @@
 package com.github.katemerek.calorie_counting_app.model;
 
+import com.github.katemerek.calorie_counting_app.enumiration.Gender;
+import com.github.katemerek.calorie_counting_app.enumiration.Goal;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Table(name="Person")
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
+@ToString(exclude = {"meals"})
 @NoArgsConstructor
 public class Person {
 
@@ -21,11 +25,12 @@ public class Person {
     private int id;
 
     @Column(name = "username")
+    @NotBlank(message = "Please enter your username")
     private String username;
 
-    @Column(name = "sex")
-    private String sex;
-
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private Gender gender;
 
     @Email(message = "Please provide a valid email address")
     @Column(name = "email")
@@ -46,9 +51,14 @@ public class Person {
     @Column(name = "height")
     private int height;
 
-    @Column(name = "goal")
-    private String goal;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 30)
+    private Goal goal;
 
     @Column(name = "daily_calorie_intake")
-    private String dailyCalorieIntake;
+    private int dailyCalorieIntake;
+
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("type")
+    private List<Meal> meals;
 }

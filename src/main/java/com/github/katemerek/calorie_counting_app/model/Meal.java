@@ -1,46 +1,47 @@
 package com.github.katemerek.calorie_counting_app.model;
 
+import com.github.katemerek.calorie_counting_app.enumiration.TypeOfMeal;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "meal")
-@Data
+@Getter
+@Setter
+@ToString(exclude = {"person", "dish"})
 @NoArgsConstructor
-@AllArgsConstructor
 public class Meal {
     @Id
     @Column(name = "meal_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int meal_id;
 
-    @Column(name = "person_id")
-    private int person_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "person_id")
+    private Person person;
 
-    @Column(name = "day_of_weeks")
-    private String dayOfTheWeek;
+    @Column(name = "date")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @NotNull
+    private LocalDate date;
 
-    @Column(name = "type_of_meal")
-    private int typeOfMeal;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 30)
+    private TypeOfMeal type;
 
-    @Column(name = "dish_id")
-    private int dishes_id;
-
-    @Column(name = "dish_name")
-    private String dish_name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dish_id")
+    private Dish dish;
 
     @Column(name = "dish_weight")
-    private int dish_weight;
+    @NotNull
+    private double dishWeight;
 
     @Column(name = "dish_calories")
-    private int dish_calories;
-
-    @Column(name = "total_calories")
-    private int total_calories;
-
-    @Column(name="calorie_requirement")
-    private boolean calorie_requirement;
-
+    private double dishCalories;
 }
