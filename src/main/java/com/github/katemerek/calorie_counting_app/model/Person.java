@@ -17,6 +17,7 @@ import java.util.List;
 @Setter
 @ToString(exclude = {"meals"})
 @NoArgsConstructor
+@AllArgsConstructor
 public class Person {
 
     @Id
@@ -32,19 +33,19 @@ public class Person {
     @Column(length = 20)
     private Gender gender;
 
-    @Email(message = "Please provide a valid email address")
-    @Column(name = "email")
-    private String email;
-
     @Min(value = 18, message = "Please enter your age between 18 and 90 years old")
     @Max(value = 90, message = "Please enter your age between 18 and 90 years old")
     @Column(name = "age")
     private int age;
 
+    @Email(message = "Please provide a valid email address")
+    @Column(name = "email")
+    private String email;
+
     @Min(value = 50, message = "Please enter your weight between 50 and 200 kilograms")
     @Max(value = 200, message = "Please enter your weight between 50 and 200 kilograms")
     @Column(name = "weight")
-    private int weight;
+    private double weight;
 
     @Min(value = 140, message = "Please enter your height between 140 and 230 centimeters")
     @Max(value = 230, message = "Please enter your height between 140 and 230 centimeters")

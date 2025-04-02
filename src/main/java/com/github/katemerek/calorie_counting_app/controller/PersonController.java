@@ -1,5 +1,6 @@
 package com.github.katemerek.calorie_counting_app.controller;
 
+import com.github.katemerek.calorie_counting_app.dto.IdResponse;
 import com.github.katemerek.calorie_counting_app.dto.PersonDto;
 import com.github.katemerek.calorie_counting_app.mapper.PersonMapper;
 import com.github.katemerek.calorie_counting_app.model.Person;
@@ -28,9 +29,16 @@ public class PersonController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<HttpStatus> registrationPerson(@RequestBody @Valid PersonDto personDto) {
+    public ResponseEntity<IdResponse> registrationPerson(@RequestBody @Valid PersonDto personDto) {
         Person personToAdd = personMapper.toPerson(personDto);
         personService.save(personToAdd);
-        return ResponseEntity.ok(HttpStatus.CREATED);
+        IdResponse response = new IdResponse(
+                personToAdd.getId(),
+                "New person created successfully"
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
     }
 }

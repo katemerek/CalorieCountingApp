@@ -5,16 +5,20 @@ This project is made as a test task using Spring Boot, Spring Data JPA.
 
 ### Steps to run the application
 - Import this project as a Maven project.
-- Run the [person.sql, ish.sql and meal.sql]  (src/main/resources) in the database to create person, dish and meal tables.
+- Create a PostgresSQL database:
+```
+  create database testprojectfor1221system
+```
+- Run the [person.sql, ish.sql and meal.sql]  (src/main/resources) in the database to create person, dish and meal tables with values.
 - Add a new person to table person from POST request. To enter the gender use MALE or FEMALE, to enter the goal use: WEIGHT_LOSS, WEIGHT_MAINTENANCE or WEIGHT_GAIN.
 ```
 {
-    "username": "Katya",
+    "username": "Екатерина",
     "gender": "FEMALE",
     "email": "pupu@kuku.ru",
     "age": 28,
     "weight": 70,
-    "height": 176,
+    "height": 180,
     "goal": "WEIGHT_MAINTENANCE"
 }
 ```
@@ -32,8 +36,8 @@ This project is made as a test task using Spring Boot, Spring Data JPA.
   The date is entered in the ISO format yyyy-MM-dd.
 ```
 {
-    "personId": 6,
-    "date": "2025-04-01",
+    "personId": 3,
+    "date": "2025-03-03",
     "type": "LUNCH",
     "dishId": 11,
     "dishWeight": 220.5
@@ -74,7 +78,7 @@ http://localhost:8080/meal/add
 This request adds a new meal in table meal.
 
 - GetDailyMealsForPerson
-http://localhost:8080/meal/daily?personId=5&date=2025-03-31
+http://localhost:8080/meal/daily?personId=2&date=2025-03-01
 This request displays a daily report with the sum of all calories and meals.
 Query Params: personId, date(ISO format yyyy-MM-dd).
 
@@ -84,6 +88,6 @@ This query displays the food history by day.
 Query Params: personId.
 
 - CheckDailyCalorieIntake
-http://localhost:8080/meal/daily-check?personId=5&date=2025-03-31
+http://localhost:8080/meal/daily-check?personId=2&date=2025-03-01
 This query checks whether the user has met their daily calorie intake.
 Query Params: personId, date(ISO format yyyy-MM-dd).

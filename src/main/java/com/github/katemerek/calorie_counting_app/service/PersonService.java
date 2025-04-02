@@ -21,9 +21,10 @@ public class PersonService {
     }
 
     @Transactional
-    public void save(Person person) {
+    public int save(Person person) {
         supplementPerson(person);
         peopleRepository.save(person);
+        return person.getId();
     }
 
     public void supplementPerson(Person person) {

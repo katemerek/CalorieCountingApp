@@ -21,12 +21,11 @@ public class PersonDto {
     @NotBlank(message = "Please enter your gender: Gender.MALE or Gender.FEMALE")
     private String gender;
 
-    @Email(message = "Please provide a valid email address")
-    private String email;
-
-    @Min(value = 18, message = "Please enter your age between 18 and 90 years old")
     @Max(value = 90, message = "Please enter your age between 18 and 90 years old")
     private int age;
+
+    @Email(message = "Please provide a valid email address")
+    private String email;
 
     @Min(value = 50, message = "Please enter your weight between 50 and 200 kilograms")
     @Max(value = 200, message = "Please enter your weight between 50 and 200 kilograms")

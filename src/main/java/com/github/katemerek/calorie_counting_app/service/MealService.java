@@ -52,7 +52,7 @@ public class MealService {
         if (!peopleRepository.existsById(personId)) {
             throw new PersonNotFoundException(personId);
         }
-        if (mealRepository.existsByDate(date)) {
+        if (!mealRepository.existsByDate(date)) {
             throw new DateNotFoundException("Not Found Meal for this date");
         }
             List<Meal> meals = mealRepository.findByPersonIdAndDateWithDish(personId, date);
@@ -93,7 +93,7 @@ public class MealService {
     public MealCheckDailyCalorieResponse checkDailyCalorieIntake(int personId, LocalDate date) throws PersonNotFoundException, DateNotFoundException {
         Person person = peopleRepository.findById(personId)
                 .orElseThrow(() -> new PersonNotFoundException(personId));
-        if (mealRepository.existsByDate(date)) {
+        if (!mealRepository.existsByDate(date)) {
             throw new DateNotFoundException("Not Found Meal for this date");
         }
         List<Meal> meals = mealRepository.findByPersonIdAndDateWithDish(personId, date);
