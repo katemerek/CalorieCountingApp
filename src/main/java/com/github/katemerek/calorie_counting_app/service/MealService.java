@@ -4,11 +4,12 @@ import com.github.katemerek.calorie_counting_app.dto.*;
 import com.github.katemerek.calorie_counting_app.mapper.MealMapper;
 import com.github.katemerek.calorie_counting_app.model.Meal;
 import com.github.katemerek.calorie_counting_app.model.Person;
+import com.github.katemerek.calorie_counting_app.repository.DishesRepository;
 import com.github.katemerek.calorie_counting_app.repository.MealRepository;
 import com.github.katemerek.calorie_counting_app.repository.PeopleRepository;
-import com.github.katemerek.calorie_counting_app.util.InvalidDataException;
+import com.github.katemerek.calorie_counting_app.util.DateNotFoundException;
+import com.github.katemerek.calorie_counting_app.util.DishNotFoundException;
 import com.github.katemerek.calorie_counting_app.util.PersonNotFoundException;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ import java.util.List;
 public class MealService {
     private final MealRepository mealRepository;
     private final PeopleRepository peopleRepository;
+    private final DishesRepository dishesRepository;
     private final MealMapper mealMapper;
 
     public List<Meal> getAllMeal() {
@@ -29,9 +31,12 @@ public class MealService {
     }
 
     @Transactional
-    public void save(Meal meal) throws PersonNotFoundException {
+    public void save(Meal meal) throws PersonNotFoundException, DishNotFoundException {
         if (!peopleRepository.existsById(meal.getPerson().getId())) {
             throw new PersonNotFoundException(meal.getPerson().getId());
+        }
+        if (!dishesRepository.existsById(meal.getDish().getId())) {
+            throw new DishNotFoundException(meal.getDish().getId());
         }
         {
             supplementMeal(meal);
@@ -43,11 +48,13 @@ public class MealService {
         meal.setDishCalories(Math.round((meal.getDishWeight() / 100) * meal.getDish().getCalories()));
     }
 
-    public MealDailyResponse getDailyMeals(int personId, LocalDate date) throws PersonNotFoundException {
+    public MealDailyResponse getDailyMeals(int personId, LocalDate date) throws PersonNotFoundException, DateNotFoundException {
         if (!peopleRepository.existsById(personId)) {
             throw new PersonNotFoundException(personId);
         }
-        {
+        if (mealRepository.existsByDate(date)) {
+            throw new DateNotFoundException("Not Found Meal for this date");
+        }
             List<Meal> meals = mealRepository.findByPersonIdAndDateWithDish(personId, date);
             List<MealDailyDto> mealsDailyDto = meals.stream()
                     .map(mealMapper::toMealDto)
@@ -59,7 +66,6 @@ public class MealService {
                     mealsDailyDto,
                     TotalCaloriesForDay
             );
-        }
     }
 
     public int calculateTotalCaloriesForDay(List<Meal> meals) {
@@ -70,8 +76,11 @@ public class MealService {
         return totalCalories;
     }
 
-    public MealHistoryResponse getFoodHistoryByDay(int personId) {
-        List<Meal> meals = mealRepository.findByPersonIdOrderByTypeAsc(personId);
+    public MealHistoryResponse getFoodHistory(int personId) throws PersonNotFoundException {
+        if (!peopleRepository.existsById(personId)) {
+            throw new PersonNotFoundException(personId);
+        }
+        List<Meal> meals = mealRepository.findByPersonIdOrderByDateAsc(personId);
         List<MealHistoryDto> mealsHistoryDto = meals.stream()
                 .map(mealMapper::toMealDto3)
                 .toList();
@@ -81,9 +90,12 @@ public class MealService {
         );
     }
 
-    public MealCheckDailyCalorieResponse checkDailyCalorieIntake(int personId, LocalDate date) {
+    public MealCheckDailyCalorieResponse checkDailyCalorieIntake(int personId, LocalDate date) throws PersonNotFoundException, DateNotFoundException {
         Person person = peopleRepository.findById(personId)
-                .orElseThrow(() -> new EntityNotFoundException("Person not found"));
+                .orElseThrow(() -> new PersonNotFoundException(personId));
+        if (mealRepository.existsByDate(date)) {
+            throw new DateNotFoundException("Not Found Meal for this date");
+        }
         List<Meal> meals = mealRepository.findByPersonIdAndDateWithDish(personId, date);
         int totalCaloriesForDay = calculateTotalCaloriesForDay(meals);
 

@@ -4,7 +4,8 @@ import com.github.katemerek.calorie_counting_app.dto.*;
 import com.github.katemerek.calorie_counting_app.mapper.MealMapper;
 import com.github.katemerek.calorie_counting_app.model.Meal;
 import com.github.katemerek.calorie_counting_app.service.MealService;
-import com.github.katemerek.calorie_counting_app.util.InvalidDataException;
+import com.github.katemerek.calorie_counting_app.util.DateNotFoundException;
+import com.github.katemerek.calorie_counting_app.util.DishNotFoundException;
 import com.github.katemerek.calorie_counting_app.util.PersonNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class MealController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<HttpStatus> registrationPerson(@RequestBody @Valid MealToAddDto mealToAddDto) throws PersonNotFoundException, InvalidDataException {
+    public ResponseEntity<HttpStatus> addMeal (@RequestBody @Valid MealToAddDto mealToAddDto) throws PersonNotFoundException, DishNotFoundException {
         Meal mealToAdd = mealMapper.toMeal(mealToAddDto);
         mealService.save(mealToAdd);
         return ResponseEntity.ok(HttpStatus.CREATED);
@@ -41,18 +42,18 @@ public class MealController {
 
     @GetMapping("/daily")
     public MealDailyResponse getDailyMeals(@RequestParam int personId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date)
-            throws PersonNotFoundException, InvalidDataException {
+            throws PersonNotFoundException, DateNotFoundException {
         return mealService.getDailyMeals(personId, date);
     }
 
     @GetMapping("/history")
     public MealHistoryResponse getFoodHistoryByDay(@RequestParam int personId) throws PersonNotFoundException {
-        return mealService.getFoodHistoryByDay(personId);
+        return mealService.getFoodHistory(personId);
     }
 
     @GetMapping("/daily-check")
     public MealCheckDailyCalorieResponse checkDailyCalorieIntake(@RequestParam int personId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date)
-            throws PersonNotFoundException, InvalidDataException {
+            throws PersonNotFoundException, DateNotFoundException {
         return mealService.checkDailyCalorieIntake(personId, date);
     }
 }

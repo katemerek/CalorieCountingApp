@@ -2,7 +2,6 @@ package com.github.katemerek.calorie_counting_app.model;
 
 import com.github.katemerek.calorie_counting_app.enumiration.TypeOfMeal;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -27,7 +26,7 @@ public class Meal {
 
     @Column(name = "date")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @NotNull
+    @NotNull(message = "Date is required")
     private LocalDate date;
 
     @Enumerated(EnumType.STRING)
