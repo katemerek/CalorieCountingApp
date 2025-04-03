@@ -6,6 +6,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class IdResponse {
+
     private int id;
+
     private String message;
 }

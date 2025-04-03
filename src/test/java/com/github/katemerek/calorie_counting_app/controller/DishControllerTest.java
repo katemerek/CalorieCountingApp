@@ -36,33 +36,23 @@ public class DishControllerTest {
     @MockitoBean
     private DishMapper dishMapper;
 
-    @InjectMocks
-    private DishController dishController;
-
     private List<Dish> getDishes() {
         Dish one = new Dish();
         Dish two = new Dish();
         return List.of(one, two);
     }
 
-    @Test
-    void getAllDish_ShouldReturnListOfDishesDtos() throws Exception {
-        when(dishService.getAllDishes()).thenReturn(getDishes());
-        mvc.perform(get("/dish"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(2));
-    }
-
-    @Test
-    void addDish_ShouldReturnCreatedStatus() throws Exception {
-
+    private DishDto createDishDto() {
         DishDto dishDto = new DishDto();
         dishDto.setDish_name("Шарлотка");
         dishDto.setCalories(350);
         dishDto.setProteins(25);
         dishDto.setFats(16);
         dishDto.setCarbohydrates(70);
+        return dishDto;
+    }
 
+    private Dish createDish() {
         Dish dish = new Dish();
         dish.setId(5);
         dish.setDish_name("Шарлотка");
@@ -70,12 +60,25 @@ public class DishControllerTest {
         dish.setProteins(25);
         dish.setFats(16);
         dish.setCarbohydrates(70);
+        return dish;
+    }
 
-        when(dishMapper.toDish(any(DishDto.class))).thenReturn(dish);
-        when(dishService.save(any(Dish.class))).thenReturn(dish.getId());
+    @Test
+    void getAllDish_ShouldReturnListOfDishesDtos() throws Exception {
+        when(dishService.getAllDishes()).thenReturn(getDishes());
+
+        mvc.perform(get("/dish"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2));
+    }
+
+    @Test
+    void addDish_ShouldReturnCreatedStatus() throws Exception {
+        when(dishMapper.toDish(any(DishDto.class))).thenReturn(createDish());
+        when(dishService.save(any(Dish.class))).thenReturn(createDish().getId());
 
         mvc.perform(post("/dish/add")
-                        .content(mapper.writeValueAsString(dishDto))
+                        .content(mapper.writeValueAsString(createDishDto()))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isCreated())
@@ -92,6 +95,4 @@ public class DishControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
-
-
 }
