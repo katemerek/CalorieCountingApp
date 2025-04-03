@@ -7,7 +7,7 @@ create table if not exists dish
     proteins      double precision,
     fats          double precision,
     carbohydrates double precision
-)
+);
 
 -- Вставка тестовых данных
     INSERT INTO dish (dish_name, calories, proteins, fats, carbohydrates)

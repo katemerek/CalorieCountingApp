@@ -3,7 +3,10 @@ package com.github.katemerek.calorie_counting_app.model;
 import com.github.katemerek.calorie_counting_app.enumiration.TypeOfMeal;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;

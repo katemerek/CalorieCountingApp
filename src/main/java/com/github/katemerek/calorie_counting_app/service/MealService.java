@@ -20,9 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
-@Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Service
 public class MealService {
     private final MealRepository mealRepository;
     private final PeopleRepository peopleRepository;

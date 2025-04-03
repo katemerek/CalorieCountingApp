@@ -14,9 +14,9 @@ create table if not exists person
 -- Вставка тестовых данных
 INSERT INTO person (username, gender, age, email, weight, height, goal, daily_calorie_intake)
 VALUES
-    ('Иван', 'MALE', 28, 'ivan.petrov@example.com', 75.5, 180, 'WEIGHT_LOST', 2000),
+    ('Иван', 'MALE', 28, 'ivan.petrov@example.com', 75.5, 180, 'WEIGHT_LOSS', 2000),
     ('Анна', 'FEMALE', 24, 'anna.s@mail.com', 58.2, 165, 'WEIGHT_GAIN', 2200),
     ('Олег', 'MALE', 35, 'volkov.a@gmail.com', 82.0, 175, 'WEIGHT_MAINTENANCE', 2500),
-    ('Роза', 'FEMALE', 30, 'kuz.elena@yandex.ru', 63.7, 170, 'WEIGHT_LOST', 1800),
+    ('Роза', 'FEMALE', 30, 'kuz.elena@yandex.ru', 63.7, 170, 'WEIGHT_LOSS', 1800),
     ('Дмитрий', 'MALE', 22, 'dima.ivanov@example.com', 68.9, 178, 'WEIGHT_GAIN', 2800);
 

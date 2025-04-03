@@ -7,7 +7,7 @@ create table if not exists meal
     dish_id       integer          not null references dish on delete cascade,
     dish_weight   double precision not null,
     dish_calories double precision not null
-)
+);
 -- Вставка тестовых данных
     INSERT INTO meal (person_id, date, type, dish_id, dish_weight, dish_calories)
     VALUES
