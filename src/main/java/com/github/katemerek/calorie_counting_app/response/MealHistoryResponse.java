@@ -1,5 +1,6 @@
-package com.github.katemerek.calorie_counting_app.dto;
+package com.github.katemerek.calorie_counting_app.response;
 
+import com.github.katemerek.calorie_counting_app.dto.MealHistoryDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

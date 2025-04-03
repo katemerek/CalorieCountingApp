@@ -7,15 +7,12 @@ import com.github.katemerek.calorie_counting_app.model.Person;
 import com.github.katemerek.calorie_counting_app.service.PersonService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.List;
 
@@ -30,7 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @WebMvcTest(PersonController.class)
-@Import(PersonController.class)
 public class PersonControllerTest {
     @Autowired
     private MockMvc mvc;
@@ -86,19 +82,18 @@ public class PersonControllerTest {
         when(personMapper.toPerson(any(PersonDto.class))).thenReturn(person);
         when(personService.save(any(Person.class))).thenReturn(person.getId());
 
-        // 3. Выполнение запроса и проверки
-        mvc.perform(post("/person/registration")  // Исправлен URL на правильный
+        mvc.perform(post("/person/registration")
                         .content(mapper.writeValueAsString(personDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isCreated())  // Ожидаем 201 Created вместо 200 OK
+                .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(1));
     }
 
     @Test
     void registrationPerson_WithInvalidData_ShouldReturnBadRequest() throws Exception {
-        PersonDto invalidDto = new PersonDto(); // без обязательных полей
+        PersonDto invalidDto = new PersonDto();
 
         mvc.perform(post("/person/registration")
                         .content(mapper.writeValueAsString(invalidDto))

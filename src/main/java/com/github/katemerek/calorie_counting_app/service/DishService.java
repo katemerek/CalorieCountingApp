@@ -19,7 +19,8 @@ public class DishService {
     }
 
     @Transactional
-    public void save(Dish dish) {
+    public int save(Dish dish) {
         dishesRepository.save(dish);
+        return dish.getId();
     }
 }

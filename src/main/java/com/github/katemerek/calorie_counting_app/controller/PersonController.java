@@ -1,6 +1,6 @@
 package com.github.katemerek.calorie_counting_app.controller;
 
-import com.github.katemerek.calorie_counting_app.dto.IdResponse;
+import com.github.katemerek.calorie_counting_app.response.IdResponse;
 import com.github.katemerek.calorie_counting_app.dto.PersonDto;
 import com.github.katemerek.calorie_counting_app.mapper.PersonMapper;
 import com.github.katemerek.calorie_counting_app.model.Person;

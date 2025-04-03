@@ -3,6 +3,10 @@ package com.github.katemerek.calorie_counting_app.controller;
 import com.github.katemerek.calorie_counting_app.dto.*;
 import com.github.katemerek.calorie_counting_app.mapper.MealMapper;
 import com.github.katemerek.calorie_counting_app.model.Meal;
+import com.github.katemerek.calorie_counting_app.response.IdResponse;
+import com.github.katemerek.calorie_counting_app.response.MealCheckDailyCalorieResponse;
+import com.github.katemerek.calorie_counting_app.response.MealDailyResponse;
+import com.github.katemerek.calorie_counting_app.response.MealHistoryResponse;
 import com.github.katemerek.calorie_counting_app.service.MealService;
 import com.github.katemerek.calorie_counting_app.util.DateNotFoundException;
 import com.github.katemerek.calorie_counting_app.util.DishNotFoundException;
@@ -33,11 +37,17 @@ public class MealController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<HttpStatus> addMeal (@RequestBody @Valid MealToAddDto mealToAddDto) throws PersonNotFoundException, DishNotFoundException {
+    public ResponseEntity<IdResponse> addMeal (@RequestBody @Valid MealToAddDto mealToAddDto) throws PersonNotFoundException, DishNotFoundException {
         Meal mealToAdd = mealMapper.toMeal(mealToAddDto);
         mealService.save(mealToAdd);
-        return ResponseEntity.ok(HttpStatus.CREATED);
+        IdResponse response = new IdResponse(
+                mealToAdd.getMeal_id(),
+                "New meal created successfully"
+        );
 
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
     }
 
     @GetMapping("/daily")

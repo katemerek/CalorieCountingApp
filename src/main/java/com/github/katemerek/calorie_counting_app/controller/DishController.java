@@ -5,6 +5,7 @@ import com.github.katemerek.calorie_counting_app.dto.PersonDto;
 import com.github.katemerek.calorie_counting_app.mapper.DishMapper;
 import com.github.katemerek.calorie_counting_app.model.Dish;
 import com.github.katemerek.calorie_counting_app.model.Person;
+import com.github.katemerek.calorie_counting_app.response.IdResponse;
 import com.github.katemerek.calorie_counting_app.service.DishService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +31,16 @@ public class DishController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<HttpStatus> addDish(@RequestBody @Valid DishDto dishDto) {
+    public ResponseEntity<IdResponse> addDish(@RequestBody @Valid DishDto dishDto) {
         Dish dishToAdd = dishMapper.toDish(dishDto);
         dishService.save(dishToAdd);
-        return ResponseEntity.ok(HttpStatus.CREATED);
+        IdResponse response = new IdResponse(
+                dishToAdd.getId(),
+                "New dish created successfully"
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
     }
 }

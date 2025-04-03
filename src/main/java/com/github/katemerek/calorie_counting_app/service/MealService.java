@@ -7,6 +7,9 @@ import com.github.katemerek.calorie_counting_app.model.Person;
 import com.github.katemerek.calorie_counting_app.repository.DishesRepository;
 import com.github.katemerek.calorie_counting_app.repository.MealRepository;
 import com.github.katemerek.calorie_counting_app.repository.PeopleRepository;
+import com.github.katemerek.calorie_counting_app.response.MealCheckDailyCalorieResponse;
+import com.github.katemerek.calorie_counting_app.response.MealDailyResponse;
+import com.github.katemerek.calorie_counting_app.response.MealHistoryResponse;
 import com.github.katemerek.calorie_counting_app.util.DateNotFoundException;
 import com.github.katemerek.calorie_counting_app.util.DishNotFoundException;
 import com.github.katemerek.calorie_counting_app.util.PersonNotFoundException;
@@ -31,7 +34,7 @@ public class MealService {
     }
 
     @Transactional
-    public void save(Meal meal) throws PersonNotFoundException, DishNotFoundException {
+    public int save(Meal meal) throws PersonNotFoundException, DishNotFoundException {
         if (!peopleRepository.existsById(meal.getPerson().getId())) {
             throw new PersonNotFoundException(meal.getPerson().getId());
         }
@@ -41,6 +44,7 @@ public class MealService {
         {
             supplementMeal(meal);
             mealRepository.save(meal);
+            return meal.getMeal_id();
         }
     }
 

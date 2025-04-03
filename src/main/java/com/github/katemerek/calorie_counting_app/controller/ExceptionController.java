@@ -1,6 +1,6 @@
 package com.github.katemerek.calorie_counting_app.controller;
 
-import com.github.katemerek.calorie_counting_app.dto.ErrorResponse;
+import com.github.katemerek.calorie_counting_app.response.ErrorResponse;
 import com.github.katemerek.calorie_counting_app.util.DateNotFoundException;
 import com.github.katemerek.calorie_counting_app.util.DishNotFoundException;
 import com.github.katemerek.calorie_counting_app.util.PersonNotFoundException;
@@ -24,7 +24,7 @@ public class ExceptionController {
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .toList();
 
-        com.github.katemerek.calorie_counting_app.dto.ErrorResponse response = new ErrorResponse(
+        ErrorResponse response = new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 "Validation failed",

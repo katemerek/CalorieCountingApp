@@ -1,4 +1,4 @@
-package com.github.katemerek.calorie_counting_app.dto;
+package com.github.katemerek.calorie_counting_app.response;
 
 import lombok.Data;
 
