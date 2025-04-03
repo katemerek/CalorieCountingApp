@@ -9,7 +9,7 @@ This project is made as a test task using Spring Boot, Spring Data JPA.
 ```
   create database testprojectfor1221system
 ```
-- Run the [person.sql, ish.sql and meal.sql]  (src/main/resources) in the database to create person, dish and meal tables with values.
+- Run the [person.sql, dish.sql and meal.sql](src/main/resources) in the database to create person, dish and meal tables with values.
 - Add a new person to table person from POST request. To enter the gender use MALE or FEMALE, to enter the goal use: WEIGHT_LOSS, WEIGHT_MAINTENANCE or WEIGHT_GAIN.
 ```
 {
@@ -44,7 +44,7 @@ This project is made as a test task using Spring Boot, Spring Data JPA.
 }
 ```
 
-Test the API with Postman to perform various operations described below.
+[Test the API with Postman](https://github.com/katemerek/Collection-for-CalorieCountingApp.git) to perform various operations described below.
 The app will start running at <http://localhost:8080>.
 
 ### REST APIs
